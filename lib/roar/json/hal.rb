@@ -57,7 +57,13 @@ module Roar
             embedded = {}
             representable_attrs.find_all do |dfn|
               name = dfn[:as].(nil) # DISCUSS: should we simplify that in Representable?
-              next unless dfn[:embedded] and fragment = hash.delete(name)
+              next unless dfn[:embedded]
+  
+              fragment = hash.delete(name)
+              if fragment.nil?
+                next unless dfn[:render_nil]
+              end
+  
               embedded[name] = fragment
             end
 
